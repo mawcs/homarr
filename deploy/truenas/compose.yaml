@@ -1,0 +1,24 @@
+# Homarr with drag-a-URL-to-add-an-app, for TrueNAS SCALE 24.10 or later.
+# Install: Apps > Discover Apps > ⋮ (top right) > Install via YAML, paste this file.
+# Full walkthrough: docs/truenas.md
+services:
+  homarr:
+    # Pinned to a version on purpose: change this tag to update (see docs/truenas.md).
+    # Available tags: https://github.com/mawcs/homarr/pkgs/container/homarr
+    image: ghcr.io/mawcs/homarr:v2.6.0-dnd
+    container_name: homarr
+    restart: unless-stopped
+    ports:
+      - "7575:7575"
+    volumes:
+      # CHANGE ME: the dataset you created for Homarr (Dataset Preset: Apps).
+      - /mnt/tank/apps/homarr:/appdata
+      # Uncomment only if you want Homarr to list and control your Docker containers.
+      # - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      # CHANGE ME: 64 hex characters, generate with `openssl rand -hex 32`.
+      # Keep a copy in your password manager. If it is lost, saved integration secrets can't be read.
+      SECRET_ENCRYPTION_KEY: "REPLACE_WITH_64_HEX_CHARACTERS"
+      # Run as TrueNAS's built-in "apps" user instead of root. Homarr fixes /appdata ownership on start.
+      PUID: "568"
+      PGID: "568"

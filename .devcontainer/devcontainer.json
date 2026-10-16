@@ -1,0 +1,34 @@
+{
+	// Dev container for Michael's Homarr fork.
+	// Node and Bun are pinned to /mise.toml and package.json engines (Node 24.18.0, Bun 1.4.2).
+	// Redis runs inside this container; the dev database is SQLite. See .devcontainer/post-create.sh.
+	"name": "Homarr (dev)",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	// gh CLI for fork maintenance and the upstream PR (see docs/ on the fork branch). Run `gh auth login` once.
+	"features": {
+		"ghcr.io/devcontainers/features/github-cli:1": {}
+	},
+	"workspaceFolder": "/workspaces/homarr",
+	"forwardPorts": [3000, 3001, 6379],
+	"portsAttributes": {
+		"3000": { "label": "Homarr (Next.js app)" },
+		"3001": { "label": "Homarr WebSocket" },
+		"6379": { "label": "Redis" }
+	},
+	"remoteEnv": {
+		"TURBO_TELEMETRY_DISABLED": "1"
+	},
+	// First-time setup: install deps, create .env with generated secrets, start redis, push and seed the SQLite DB.
+	"onCreateCommand": "bash .devcontainer/post-create.sh",
+	// Redis must be running on every container start. Its dump.rdb goes to the git-ignored .data/ folder.
+	"postStartCommand": "mkdir -p .devcontainer/.data && redis-server --daemonize yes --dir /workspaces/homarr/.devcontainer/.data",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"oven.bun-vscode"
+			]
+		}
+	}
+}

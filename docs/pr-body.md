@@ -1,8 +1,7 @@
 > [!NOTE]
-> **Depends on #6562.** This branch contains #6562's commits so it builds; only the last three
-> commits belong to this PR: `feat(board): add apps by dropping a URL onto the board in edit mode`,
-> `fix(boards): keep unsaved edit mode changes when the tab regains focus` and
-> `fix(board): accept dropped urls from Firefox and Edge`.
+> **Depends on #6562.** This branch contains #6562's commits so it builds; only the last two
+> commits, `feat(board): add apps by dropping a URL onto the board in edit mode` and
+> `fix(boards): keep unsaved edit mode changes when the tab regains focus`, belong to this PR.
 > I'll rebase onto `dev` once #6562 is merged, and keep this as a draft until then.
 
 ## What this adds

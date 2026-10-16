@@ -61,8 +61,8 @@ to hit, so I'm listing them rather than working around them here:
 ## Testing
 
 - Dropped URLs from the address bar of Chromium, Brave, Edge, Firefox and DuckDuckGo on Windows
-  onto a board in edit mode; saved, reloaded and restarted the server, and the apps persisted
-  with the expected names and icons.
+  onto a board in edit mode. Saved, reloaded and restarted the server; the apps persisted with
+  the expected names and icons.
 - Real sites (GitHub, Home Assistant, Sonarr), and pages with entities in the title, thousands
   of unclosed `<title` tags, a 250 KB unterminated entity, only a `mask-icon`, and a loopback
   address. The hostile pages resolve in under 20 ms.

@@ -1,7 +1,8 @@
 > [!NOTE]
-> **Depends on #6562.** This branch contains #6562's commits so it builds; only the last two
-> commits, `feat(board): add apps by dropping a URL onto the board in edit mode` and
-> `fix(boards): keep unsaved edit mode changes when the tab regains focus`, belong to this PR.
+> **Depends on #6562.** This branch contains #6562's commits so it builds; only the last three
+> commits belong to this PR: `feat(board): add apps by dropping a URL onto the board in edit mode`,
+> `fix(boards): keep unsaved edit mode changes when the tab regains focus` and
+> `fix(board): accept dropped urls from Firefox and Edge`.
 > I'll rebase onto `dev` once #6562 is merged, and keep this as a draft until then.
 
 ## What this adds
@@ -26,17 +27,20 @@ the site's icon. Adding an app currently takes several steps; this makes it one 
 - **Request type:** it is a mutation, so the URL travels in the request body and stays out of
   access logs.
 - **Client:** `BoardAppUrlDrop` listens for native `dragover`/`drop` only while edit mode is on
-  and the user can create apps. It accepts `text/uri-list` drags and ignores files and drags that
-  start inside Homarr, so it does not interfere with the grid's own drag and drop. It then calls
-  the existing `app.create` and `createItem`, like the "Add app" menu. Drops anywhere on the page
-  are handled, so a near miss no longer makes the browser navigate away and drop unsaved edits.
+  and the user can create apps. It accepts drags carrying `text/uri-list` or Firefox's
+  `text/x-moz-url`, and ignores drags that start inside Homarr, so it does not interfere with the
+  grid's own drag and drop. Drags that also carry a file are accepted, because Edge attaches an
+  internet shortcut to address bar drags; plain file drags have no url type and are left to the
+  browser, and only `http(s)` urls are added. It then calls the existing `app.create` and
+  `createItem`, like the "Add app" menu. URL drops anywhere on the page are handled, so a near
+  miss no longer makes the browser navigate away and drop unsaved edits.
 - **Edit mode fix:** the board query refetched on window focus once its 30 second stale time had
   passed, which replaced unsaved edit mode changes with the saved board. Adding apps by drag
   means switching to another tab and back, so newly dropped tiles kept vanishing. While edit
   mode is on, the board no longer refetches on focus or reconnect; Save and Cancel still
   invalidate it as before. `EditModeProvider` now wraps `BoardProvider` so the query can read it.
   This affects the existing edit mode as well, so it is a separate commit.
-- **Size:** 7 files, about 230 lines including the new component.
+- **Size:** 7 files, about 235 lines including the new component.
 
 ## Known limitations
 
@@ -56,7 +60,7 @@ to hit, so I'm listing them rather than working around them here:
 
 ## Testing
 
-- Dropped URLs from the address bar of <!-- BROWSERS YOU TESTED, e.g. Chrome and Firefox -->
+- Dropped URLs from the address bar of Chromium, Brave, Edge, Firefox and DuckDuckGo on Windows
   onto a board in edit mode; saved, reloaded and restarted the server, and the apps persisted
   with the expected names and icons.
 - Real sites (GitHub, Home Assistant, Sonarr), and pages with entities in the title, thousands

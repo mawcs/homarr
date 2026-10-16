@@ -12,7 +12,7 @@ That PR adds the guarded website fetcher, and the maintainers are holding it for
 security review. Until #6562 is merged, your PR has to include its 15 commits so it builds. A
 **draft** PR is the normal way to say "ready to look at, but waiting on something": it's visible
 and can be discussed, but it can't be merged by accident. The PR description says this up front
-and tells reviewers that only the last commit is yours.
+and tells reviewers that only the last two commits are yours.
 
 ## Steps
 
@@ -57,7 +57,7 @@ pushes the branch and opens the draft PR on `homarr-labs/homarr`, printing its U
 > **GitHub MCP instead of the script:** the branch has to be pushed first
 > (`git push -u origin feat/drop-url-to-add-app`). Then ask Copilot Chat in agent mode:
 > *"Create a draft pull request in homarr-labs/homarr from mawcs:feat/drop-url-to-add-app into dev.
-> Use the title of the branch's last commit and the contents of docs/pr-body.md from the fork
+> Use the title "feat(board): add apps by dropping a URL onto the board in edit mode" and the contents of docs/pr-body.md from the fork
 > branch as the description."*
 
 ### 6. Add the demo and tell #6562's author

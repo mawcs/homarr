@@ -22,7 +22,9 @@ fi
 git fetch origin fork
 body_file=$(mktemp)
 git show origin/fork:docs/pr-body.md > "$body_file"
-title=$(git log -1 --format=%s "$branch")
+# The feature commit names the PR. It is not the newest commit: fixes found while testing follow it.
+title=${PR_TITLE:-$(git log -1 --format=%s --grep='^feat(board):' "$branch")}
+[ -n "$title" ] || { echo "No feat(board) commit on $branch; set PR_TITLE."; exit 1; }
 
 echo "Branch:  $fork_owner:$branch -> $upstream_repo:dev"
 echo "Title:   $title"

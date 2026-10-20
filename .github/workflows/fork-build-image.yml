@@ -9,7 +9,10 @@ on:
   workflow_dispatch:
     inputs:
       upstream-tag:
-        description: Upstream release tag to build, for example v2.6.0 (default is the latest release)
+        description: >-
+          Upstream release tag to build, for example v2.6.0 (default is the latest release).
+          Pass "dev" to build from the tip of upstream's dev branch instead, for testing a
+          feature dependency that merged into dev but has not shipped in a release yet.
         required: false
       force:
         description: Rebuild even if this exact image already exists

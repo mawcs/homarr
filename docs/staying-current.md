@@ -35,6 +35,17 @@ give it an older release tag, or tick *force* to rebuild.
 So a new upstream release gets you a new image within a day, without you doing anything.
 Deploying it is up to you ([Updating on TrueNAS](truenas.md#updating)).
 
+### Testing against a dependency that hasn't shipped yet
+
+A feature this fork's feature branch depends on (like #6562) can merge into upstream `dev`
+days or weeks before it's in a tagged release. Until then, the normal build fails: it tries to
+replay the now-minimal feature branch onto the latest release, which doesn't have the
+dependency yet. To get a testable image anyway, run the workflow by hand with **upstream-tag**
+set to `dev`. That builds from the current tip of upstream `dev` instead of a release, tags the
+image `dev-<sha>-dnd...` so it's never confused with a real release build, and never becomes
+`:latest`. Use it to confirm things work on your NAS; switch back to a release tag once one
+ships.
+
 ## First-time setup
 
 Done once, in this order. Pushing the branches comes first, while Actions are still off, so

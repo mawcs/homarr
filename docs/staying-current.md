@@ -122,6 +122,10 @@ fetcher you need into your own commit, then update the PR.
 
 ## When the feature ships upstream
 
+**Done, 2026-10-24.** PR #7210 merged and shipped in `v2.9.0`. TrueNAS runs
+`ghcr.io/homarr-labs/homarr:v2.9.0` and the fork's build workflow is disabled. The steps below
+are kept as reference in case this fork is ever reused for something else.
+
 When your PR is merged and an upstream release includes it, the daily build stops with
 "already contains the feature". At that point:
 

@@ -2,6 +2,12 @@
 
 This is Michael's fork of Homarr. It exists for one focused feature, described below. For Homarr's own repository conventions (structure, commands, code style, where documentation goes), follow `AGENTS.md` in this repo; this file does not repeat it. This file is the intent and the working agreement for the fork.
 
+## Status: done, shipped
+
+PR #7210 merged into upstream `dev` on 2026-10-24 and shipped the same day in the official `v2.9.0` release, including the three follow-up fixes from review (an SSRF gap in the icon proxy, an orphaned-app-record edge case on a full board, and a doc correction). The fork's own build pipeline (`fork-build-image.yml`) is disabled. TrueNAS runs `ghcr.io/homarr-labs/homarr:v2.9.0` directly now, not this fork's image.
+
+The rest of this file is the original intent and working agreement, kept for the record. If the feature needs a follow-up fix, open a PR against upstream `dev` the normal way; don't resurrect the fork's build pipeline unless upstream regresses something only this fork can reproduce.
+
 ## What I intend to do
 
 Add one thing to Homarr: the ability to drag a URL out of the browser's address bar and drop it into a dashboard's edit zone to automatically create a new app tile. The new tile takes its name from the page's title and its icon from the site's favicon.

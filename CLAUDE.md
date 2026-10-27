@@ -50,6 +50,10 @@ From the repository map in `AGENTS.md`, the first places to look:
 
 Treat the structure as a map, not a guarantee. Confirm the actual code paths before building on them.
 
+## Writing Style
+
+Avoid em dashes in anything written for me (chat replies, commit messages, PR bodies, code comments, issue/PR comments). Prefer a comma or parentheses instead.
+
 ## Command Center
 
 This is Slot 3 in my Command Center system. The project record lives in the `command_center` repo at `projects/homarr-drag-and-drop.md`, and that repo, not this file, is the source of truth for the project's status. Keep this file about the code; status belongs there.

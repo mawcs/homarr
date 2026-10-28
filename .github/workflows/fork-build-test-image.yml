@@ -1,0 +1,65 @@
+# Builds ghcr.io/mawcs/homarr from an arbitrary branch in this fork, on demand, so a PR branch
+# can be test-deployed to TrueNAS before it merges upstream. Unlike "[Fork] Build image", this
+# does not touch upstream source at all: it just builds whatever ref you give it.
+name: "[Fork] Build test image"
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch, tag or SHA in this fork to build
+        required: true
+      tag:
+        description: Tag to publish as (ghcr.io/mawcs/homarr:<tag>)
+        required: true
+
+permissions:
+  contents: read
+  packages: write # push the image to GHCR
+
+env:
+  IMAGE: ghcr.io/mawcs/homarr
+
+concurrency:
+  group: fork-build-test-image
+
+jobs:
+  build:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.ref }}
+
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - uses: docker/setup-buildx-action@v4
+
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          tags: ${{ env.IMAGE }}:${{ inputs.tag }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.description=Homarr test build, not for long-term use
+            org.opencontainers.image.revision=${{ inputs.ref }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Summary
+        run: |
+          {
+            echo "### Published"
+            echo
+            echo "- \`${{ env.IMAGE }}:${{ inputs.tag }}\`"
+            echo
+            echo "Built from \`${{ inputs.ref }}\`."
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -235,7 +235,8 @@ export const appRouter = createTRPCRouter({
       const name = (metadata.title ?? new URL(input.href).hostname).slice(0, 64);
       return {
         name,
-        iconUrl: metadata.iconUrl ?? getIconForName(ctx.db, name).sync()?.url ?? defaultIcon,
+        // A curated icon is served by Homarr's icon repositories, so it loads even where the site's own favicon is blocked
+        iconUrl: getIconForName(ctx.db, name).sync()?.url ?? metadata.iconUrl ?? defaultIcon,
       };
     }),
   createMany: permissionRequiredProcedure

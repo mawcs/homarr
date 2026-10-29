@@ -8,7 +8,7 @@ import type { Database, InferSelectModel } from "@homarr/db";
 import { asc, eq, inArray, like } from "@homarr/db";
 import { apps, integrations } from "@homarr/db/schema";
 import { selectAppSchema } from "@homarr/db/validationSchemas";
-import { fetchWebsiteMetadataAsync, getIconForName } from "@homarr/icons";
+import { fetchWebsiteMetadataAsync, getIconForName, getIconForWebsiteAsync } from "@homarr/icons";
 import { invalidateIntegrationResponseCacheAsync } from "@homarr/redis";
 import { appCreateManySchema, appEditSchema, appManageSchema } from "@homarr/validation/app";
 import { byIdSchema, paginatedSchema } from "@homarr/validation/common";
@@ -236,7 +236,7 @@ export const appRouter = createTRPCRouter({
       return {
         name,
         // A curated icon is served by Homarr's icon repositories, so it loads even where the site's own favicon is blocked
-        iconUrl: getIconForName(ctx.db, name).sync()?.url ?? metadata.iconUrl ?? defaultIcon,
+        iconUrl: (await getIconForWebsiteAsync(ctx.db, input.href, metadata.title)) ?? metadata.iconUrl ?? defaultIcon,
       };
     }),
   createMany: permissionRequiredProcedure
